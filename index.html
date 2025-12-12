@@ -1,682 +1,586 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧪 Formulación Inorgánica - Compuestos Binarios (1º Bach.)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Master Formulación Binaria</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
     
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#007bff", 
+                        secondary: "#28a745", 
+                        "background-light": "#f3f4f6", 
+                        "background-dark": "#111827", 
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1f2937", 
+                        "input-bg-light": "#f9fafb",
+                        "input-bg-dark": "#374151",
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f7f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            margin: 0 0 5px 0;
-        }
-
-        main {
-            display: flex;
-            gap: 30px;
-            padding: 30px 20px;
-            width: 90%;
-            max-width: 1200px;
-            flex-wrap: wrap;
-        }
-
-        #exercise-box {
-            flex: 3;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-            min-width: 300px;
-        }
-
-        #score-board {
-            flex: 1;
-            background-color: #e9ecef;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-            min-width: 200px;
-            height: fit-content;
-        }
-
-        #challenge {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #fff3cd; /* Amarillo suave para la pregunta */
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #ffeeba;
-        }
-
-        #input-area label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #0056b3;
-        }
-
-        #input-area input {
-            width: 95%;
-            padding: 10px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        #input-area input:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        #controls {
-            margin-top: 25px;
-            display: flex;
-            gap: 15px;
-        }
-
-        #controls button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            transition: background-color 0.3s, opacity 0.3s;
-        }
-
-        #check-button {
-            background-color: #28a745;
-            color: white;
-        }
-
-        #check-button:hover {
-            background-color: #1e7e34;
-        }
-
-        #next-button {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        #next-button:not([disabled]):hover {
-            background-color: #5a6268;
-        }
-
-        #next-button[disabled] {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .feedback {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            opacity: 0; /* Oculto inicialmente */
-            transition: opacity 0.5s;
-        }
-
-        .feedback.correct {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            opacity: 1;
-        }
-
-        .feedback.incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            opacity: 1;
-        }
-
-        /* Ocultar campos de entrada según el tipo de pregunta */
-        .hidden-input {
-            display: none;
-        }
-
-        footer {
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #343a40;
-            color: white;
-            margin-top: auto; /* Empuja el footer hacia abajo */
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            main {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            #exercise-box, #score-board {
-                width: 100%;
-                max-width: none;
-            }
-        }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        sub { vertical-align: sub; font-size: 0.7em; }
     </style>
 </head>
-<body>
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
 
-    <header>
-        <h1>⚛️ Formulación Binaria Interactiva (1º Bach.)</h1>
-        <p>Practica la formulación y nomenclatura (Stock y Sistemática) de Óxidos, Peróxidos, Hidruros y Sales Binarias. ¡Más de 200 ejercicios diferentes!</p>
+    <header class="bg-primary text-white shadow-md rounded-b-2xl relative overflow-hidden shrink-0">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div class="max-w-md mx-auto px-4 py-4 relative z-10">
+            <div class="flex items-center justify-center space-x-3">
+                <div class="bg-white/20 p-1.5 rounded-lg backdrop-blur-sm shrink-0">
+                    <span class="material-icons-round text-xl">science</span>
+                </div>
+                <div class="text-left">
+                    <h1 class="text-lg font-bold leading-tight">Master Formulación</h1>
+                    <p class="text-xs text-blue-100 mt-0.5 leading-snug">
+                        Óxidos, Peróxidos, Hidruros y Sales (+600 ejercicios)
+                    </p>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <div id="exercise-box">
-            <h2 id="question-type"></h2>
-            
-            <div id="challenge">
-                </div>
-
-            <div id="input-area">
-                <div id="container-stock">
-                    <label for="answer-stock">Nomenclatura Stock:</label>
-                    <input type="text" id="answer-stock" placeholder="Ej: Óxido de hierro (III)">
-                </div>
-                
-                <div id="container-sistem">
-                    <label for="answer-sistem">Nomenclatura Sistemática:</label>
-                    <input type="text" id="answer-sistem" placeholder="Ej: Trióxido de dihierro">
-                </div>
-                
-                <div id="container-formula">
-                    <label for="answer-formula">Fórmula (Usar solo letras y números, Ej: Fe2O3):</label>
-                    <input type="text" id="answer-formula" placeholder="Ej: Fe2O3">
-                </div>
-            </div>
-
-            <div id="controls">
-                <button id="check-button">Comprobar</button>
-                <button id="next-button" disabled>Siguiente Ejercicio</button>
-            </div>
-
-            <div id="feedback" class="feedback"></div>
-        </div>
+    <main class="flex-grow px-4 py-5 max-w-md mx-auto w-full space-y-5">
         
-        <div id="score-board">
-            <h2>🏆 Puntuación</h2>
-            <p>Aciertos: <span id="correct-count">0</span></p>
-            <p>Fallos: <span id="wrong-count">0</span></p>
-            <p>Total: <span id="total-count">0</span></p>
+        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div class="p-5">
+                <div class="flex items-center space-x-2 mb-3">
+                    <span class="material-icons-round text-primary text-xl">edit_note</span>
+                    <h2 id="question-type" class="text-sm font-bold text-gray-800 dark:text-white uppercase tracking-wide">Cargando...</h2>
+                </div>
+
+                <!-- Selector de categorías -->
+                <div class="mb-4">
+                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Categoría:</label>
+                    <select id="category-filter" class="w-full px-3 py-2 rounded-lg border-gray-300 dark:border-gray-600 bg-input-bg-light dark:bg-input-bg-dark text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary" aria-label="Seleccionar categoría de compuestos">
+                        <option value="all">Todas las categorías</option>
+                        <option value="hidruros">Hidruros</option>
+                        <option value="oxidos">Óxidos</option>
+                        <option value="peroxidos">Peróxidos</option>
+                        <option value="sales">Sales Binarias</option>
+                    </select>
+                </div>
+
+                <div class="bg-amber-100 dark:bg-amber-900/30 border-l-4 border-amber-400 p-4 rounded-r-xl mb-5 shadow-sm">
+                    <div id="challenge" class="text-lg font-bold text-gray-900 dark:text-amber-50 leading-snug break-words" role="alert" aria-live="polite">
+                        </div>
+                </div>
+
+                <div id="input-area" class="space-y-4 mb-5">
+                    
+                    <div id="container-stock" class="hidden space-y-1">
+                        <label class="block text-xs font-medium text-primary dark:text-blue-400 uppercase" for="answer-stock">
+                            Nomenclatura Stock
+                        </label>
+                        <div class="relative">
+                            <input class="block w-full pl-3 pr-10 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 bg-input-bg-light dark:bg-input-bg-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary text-base shadow-sm transition-all" 
+                                   id="answer-stock" type="text" placeholder="Ej: Óxido de hierro (III)" aria-label="Respuesta nomenclatura Stock"/>
+                        </div>
+                    </div>
+
+                    <div id="container-sistem" class="hidden space-y-1">
+                        <label class="block text-xs font-medium text-primary dark:text-blue-400 uppercase" for="answer-sistem">
+                            Nomenclatura Sistemática
+                        </label>
+                        <div class="relative">
+                            <input class="block w-full pl-3 pr-10 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 bg-input-bg-light dark:bg-input-bg-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary text-base shadow-sm transition-all" 
+                                   id="answer-sistem" type="text" placeholder="Ej: Trióxido de dihierro" aria-label="Respuesta nomenclatura sistemática"/>
+                        </div>
+                    </div>
+
+                    <div id="container-formula" class="hidden space-y-1">
+                        <label class="block text-xs font-medium text-primary dark:text-blue-400 uppercase" for="answer-formula">
+                            Fórmula <span class="text-xs text-gray-500 dark:text-gray-400 font-normal normal-case">(Ej: Fe2O3)</span>
+                        </label>
+                        <div class="relative">
+                            <input class="block w-full pl-3 pr-10 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 bg-input-bg-light dark:bg-input-bg-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary text-base shadow-sm transition-all" 
+                                   id="answer-formula" type="text" placeholder="Ej: Fe2O3" aria-label="Respuesta fórmula química"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="hint-button" class="flex items-center justify-center w-full px-4 py-2.5 border border-amber-300 dark:border-amber-600 text-sm font-medium rounded-xl shadow-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 active:scale-95 transition-transform duration-150" type="button" aria-label="Obtener pista sobre el ejercicio">
+                        <span class="material-icons-round text-lg mr-1">lightbulb</span>
+                        Pista
+                    </button>
+                    <button id="check-button" class="flex items-center justify-center w-full px-4 py-2.5 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 active:scale-95 transition-transform duration-150" type="button" aria-label="Comprobar respuesta">
+                        <span class="material-icons-round text-lg mr-1">check_circle</span>
+                        Comprobar
+                    </button>
+                </div>
+                
+                <div class="mt-3">
+                    <button id="next-button" class="flex items-center justify-center w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl shadow-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary active:scale-95 transition-transform duration-150 disabled:opacity-50 disabled:cursor-not-allowed" type="button" disabled aria-label="Siguiente ejercicio">
+                        Siguiente
+                        <span class="material-icons-round text-lg ml-1">arrow_forward</span>
+                    </button>
+                </div>
+
+                <div id="feedback" class="mt-4 hidden rounded-xl p-4 text-sm font-medium fade-in" role="alert" aria-live="assertive"></div>
+
+            </div>
         </div>
+
+        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+            <div class="flex items-center space-x-2 mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                <span class="material-icons-round text-yellow-500 text-xl">emoji_events</span>
+                <h3 class="text-base font-bold text-gray-800 dark:text-white">Puntuación</h3>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-0.5">Aciertos</span>
+                    <span id="correct-count" class="text-xl font-bold text-green-600 dark:text-green-400" aria-label="Número de aciertos">0</span>
+                </div>
+                <div class="flex flex-col items-center border-l border-r border-gray-100 dark:border-gray-700">
+                    <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-0.5">Fallos</span>
+                    <span id="wrong-count" class="text-xl font-bold text-red-500 dark:text-red-400" aria-label="Número de fallos">0</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-0.5">Total</span>
+                    <span id="total-count" class="text-xl font-bold text-primary dark:text-blue-400" aria-label="Total de ejercicios">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de errores -->
+        <div id="error-history" class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 hidden">
+            <div class="flex items-center justify-between mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                <div class="flex items-center space-x-2">
+                    <span class="material-icons-round text-red-500 text-xl">history</span>
+                    <h3 class="text-base font-bold text-gray-800 dark:text-white">Últimos Errores</h3>
+                </div>
+                <button id="clear-history" class="text-xs text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" aria-label="Limpiar historial de errores">
+                    <span class="material-icons-round text-sm">delete</span>
+                </button>
+            </div>
+            <div id="error-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
+        </div>
+
+        <!-- Estadísticas por categoría -->
+        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+            <div class="flex items-center space-x-2 mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                <span class="material-icons-round text-blue-500 text-xl">bar_chart</span>
+                <h3 class="text-base font-bold text-gray-800 dark:text-white">Estadísticas</h3>
+            </div>
+            <div id="stats-container" class="space-y-2"></div>
+        </div>
+
     </main>
 
-    <footer>
-        <p>¡Aprende y domina la química inorgánica!</p>
+    <footer class="bg-gray-800 text-white py-4 mt-auto shrink-0">
+        <div class="max-w-md mx-auto px-6 text-center">
+            <p class="text-xs font-medium text-gray-400">Química Inorgánica Interactiva (2º Bach.)</p>
+            <button id="reset-stats" class="mt-2 text-xs text-red-400 hover:text-red-300 underline" aria-label="Resetear todas las estadísticas">
+                Resetear estadísticas
+            </button>
+        </div>
     </footer>
 
     <script>
-        // Base de datos de Compuestos Binarios (200+ Ejercicios)
+        // --- GENERACIÓN DE BASE DE DATOS ---
         const compounds = [
+            // HIDRUROS
+            { f: "LiH", s: "Hidruro de litio", i: "Monohidruro de litio", cat: "hidruros" },
+            { f: "NaH", s: "Hidruro de sodio", i: "Monohidruro de sodio", cat: "hidruros" },
+            { f: "KH", s: "Hidruro de potasio", i: "Monohidruro de potasio", cat: "hidruros" },
+            { f: "CaH2", s: "Hidruro de calcio", i: "Dihidruro de calcio", cat: "hidruros" },
+            { f: "FeH2", s: "Hidruro de hierro (II)", i: "Dihidruro de hierro", cat: "hidruros" },
+            { f: "FeH3", s: "Hidruro de hierro (III)", i: "Trihidruro de hierro", cat: "hidruros" },
+            { f: "AlH3", s: "Hidruro de aluminio", i: "Trihidruro de aluminio", cat: "hidruros" },
+            { f: "HCl", s: "Cloruro de hidrógeno", i: "Cloruro de hidrógeno", cat: "hidruros" },
+            { f: "HBr", s: "Bromuro de hidrógeno", i: "Bromuro de hidrógeno", cat: "hidruros" },
+            { f: "H2S", s: "Sulfuro de hidrógeno", i: "Sulfuro de hidrógeno", cat: "hidruros" },
+            { f: "NH3", s: "(Amoniaco)", i: "Trihidruro de nitrógeno", cat: "hidruros" },
+            { f: "CH4", s: "(Metano)", i: "Tetrahidruro de carbono", cat: "hidruros" },
+
             // ÓXIDOS
-            { formula: "Li2O", stock: "Óxido de litio", sistem: "Monóxido de dilitio" },
-            { formula: "Na2O", stock: "Óxido de sodio", sistem: "Monóxido de disodio" },
-            { formula: "K2O", stock: "Óxido de potasio", sistem: "Monóxido de dipotasio" },
-            { formula: "MgO", stock: "Óxido de magnesio", sistem: "Monóxido de magnesio" },
-            { formula: "CaO", stock: "Óxido de calcio", sistem: "Monóxido de calcio" },
-            { formula: "BaO", stock: "Óxido de bario", sistem: "Monóxido de bario" },
-            { formula: "Al2O3", stock: "Óxido de aluminio", sistem: "Trióxido de dialuminio" },
-            { formula: "ZnO", stock: "Óxido de cinc", sistem: "Monóxido de cinc" },
-            { formula: "Ag2O", stock: "Óxido de plata", sistem: "Monóxido de diplata" },
-            
-            // Óxidos con Valencia Variable (Metales)
-            { formula: "FeO", stock: "Óxido de hierro (II)", sistem: "Monóxido de hierro" },
-            { formula: "Fe2O3", stock: "Óxido de hierro (III)", sistem: "Trióxido de dihierro" },
-            { formula: "CuO", stock: "Óxido de cobre (II)", sistem: "Monóxido de cobre" },
-            { formula: "Cu2O", stock: "Óxido de cobre (I)", sistem: "Monóxido de dicobre" },
-            { formula: "NiO", stock: "Óxido de níquel (II)", sistem: "Monóxido de níquel" },
-            { formula: "Ni2O3", stock: "Óxido de níquel (III)", sistem: "Trióxido de diníquel" },
-            { formula: "SnO", stock: "Óxido de estaño (II)", sistem: "Monóxido de estaño" },
-            { formula: "SnO2", stock: "Óxido de estaño (IV)", sistem: "Dióxido de estaño" },
-            { formula: "PbO", stock: "Óxido de plomo (II)", sistem: "Monóxido de plomo" },
-            { formula: "PbO2", stock: "Óxido de plomo (IV)", sistem: "Dióxido de plomo" },
-            { formula: "CrO", stock: "Óxido de cromo (II)", sistem: "Monóxido de cromo" },
-            { formula: "Cr2O3", stock: "Óxido de cromo (III)", sistem: "Trióxido de dicromo" },
-            { formula: "CrO3", stock: "Óxido de cromo (VI)", sistem: "Trióxido de cromo" },
-            { formula: "MnO", stock: "Óxido de manganeso (II)", sistem: "Monóxido de manganeso" },
-            { formula: "MnO2", stock: "Óxido de manganeso (IV)", sistem: "Dióxido de manganeso" },
-            { formula: "Mn2O7", stock: "Óxido de manganeso (VII)", sistem: "Heptaóxido de dimanganeso" },
-            { formula: "HgO", stock: "Óxido de mercurio (II)", sistem: "Monóxido de mercurio" },
-            { formula: "Hg2O", stock: "Óxido de mercurio (I)", sistem: "Monóxido de dimercurio" },
-            
-            // Óxidos (No Metales)
-            { formula: "CO", stock: "Óxido de carbono (II)", sistem: "Monóxido de carbono" },
-            { formula: "CO2", stock: "Óxido de carbono (IV)", sistem: "Dióxido de carbono" },
-            { formula: "SO2", stock: "Óxido de azufre (IV)", sistem: "Dióxido de azufre" },
-            { formula: "SO3", stock: "Óxido de azufre (VI)", sistem: "Trióxido de azufre" },
-            { formula: "N2O", stock: "Óxido de nitrógeno (I)", sistem: "Monóxido de dinitrógeno" },
-            { formula: "NO", stock: "Óxido de nitrógeno (II)", sistem: "Monóxido de nitrógeno" },
-            { formula: "N2O3", stock: "Óxido de nitrógeno (III)", sistem: "Trióxido de dinitrógeno" },
-            { formula: "NO2", stock: "Óxido de nitrógeno (IV)", sistem: "Dióxido de nitrógeno" },
-            { formula: "N2O5", stock: "Óxido de nitrógeno (V)", sistem: "Pentaóxido de dinitrógeno" },
-            { formula: "Cl2O", stock: "Óxido de cloro (I)", sistem: "Monóxido de dicloro" },
-            { formula: "Cl2O3", stock: "Óxido de cloro (III)", sistem: "Trióxido de dicloro" },
-            { formula: "Cl2O5", stock: "Óxido de cloro (V)", sistem: "Pentaóxido de dicloro" },
-            { formula: "Cl2O7", stock: "Óxido de cloro (VII)", sistem: "Heptaóxido de dicloro" },
-            { formula: "I2O5", stock: "Óxido de yodo (V)", sistem: "Pentaóxido de diyodo" },
-            { formula: "P2O3", stock: "Óxido de fósforo (III)", sistem: "Trióxido de difósforo" },
-            { formula: "P2O5", stock: "Óxido de fósforo (V)", sistem: "Pentaóxido de difósforo" },
+            { f: "Li2O", s: "Óxido de litio", i: "Monóxido de dilitio", cat: "oxidos" },
+            { f: "Na2O", s: "Óxido de sodio", i: "Monóxido de disodio", cat: "oxidos" },
+            { f: "K2O", s: "Óxido de potasio", i: "Monóxido de dipotasio", cat: "oxidos" },
+            { f: "CaO", s: "Óxido de calcio", i: "Monóxido de calcio", cat: "oxidos" },
+            { f: "MgO", s: "Óxido de magnesio", i: "Monóxido de magnesio", cat: "oxidos" },
+            { f: "Al2O3", s: "Óxido de aluminio", i: "Trióxido de dialuminio", cat: "oxidos" },
+            { f: "FeO", s: "Óxido de hierro (II)", i: "Monóxido de hierro", cat: "oxidos" },
+            { f: "Fe2O3", s: "Óxido de hierro (III)", i: "Trióxido de dihierro", cat: "oxidos" },
+            { f: "CuO", s: "Óxido de cobre (II)", i: "Monóxido de cobre", cat: "oxidos" },
+            { f: "Cu2O", s: "Óxido de cobre (I)", i: "Monóxido de dicobre", cat: "oxidos" },
+            { f: "ZnO", s: "Óxido de cinc", i: "Monóxido de cinc", cat: "oxidos" },
+            { f: "PbO", s: "Óxido de plomo (II)", i: "Monóxido de plomo", cat: "oxidos" },
+            { f: "PbO2", s: "Óxido de plomo (IV)", i: "Dióxido de plomo", cat: "oxidos" },
+            { f: "SO2", s: "Óxido de azufre (IV)", i: "Dióxido de azufre", cat: "oxidos" },
+            { f: "SO3", s: "Óxido de azufre (VI)", i: "Trióxido de azufre", cat: "oxidos" },
+            { f: "CO", s: "Óxido de carbono (II)", i: "Monóxido de carbono", cat: "oxidos" },
+            { f: "CO2", s: "Óxido de carbono (IV)", i: "Dióxido de carbono", cat: "oxidos" },
+            { f: "NO", s: "Óxido de nitrógeno (II)", i: "Monóxido de nitrógeno", cat: "oxidos" },
+            { f: "N2O3", s: "Óxido de nitrógeno (III)", i: "Trióxido de dinitrógeno", cat: "oxidos" },
+            { f: "NO2", s: "Óxido de nitrógeno (IV)", i: "Dióxido de nitrógeno", cat: "oxidos" },
+            { f: "Cl2O", s: "Óxido de cloro (I)", i: "Monóxido de dicloro", cat: "oxidos" },
+            { f: "Cl2O7", s: "Óxido de cloro (VII)", i: "Heptaóxido de dicloro", cat: "oxidos" },
 
             // PERÓXIDOS
-            { formula: "H2O2", stock: "Peróxido de hidrógeno", sistem: "Dióxido de dihidrógeno" }, 
-            { formula: "Na2O2", stock: "Peróxido de sodio", sistem: "Dióxido de disodio" },
-            { formula: "K2O2", stock: "Peróxido de potasio", sistem: "Dióxido de dipotasio" },
-            { formula: "CaO2", stock: "Peróxido de calcio", sistem: "Dióxido de calcio" },
-            { formula: "BaO2", stock: "Peróxido de bario", sistem: "Dióxido de bario" },
-            { formula: "SrO2", stock: "Peróxido de estroncio", sistem: "Dióxido de estroncio" },
-            { formula: "Mg2O2", stock: "Peróxido de magnesio", sistem: "Dióxido de dimagnesio" },
+            { f: "H2O2", s: "Peróxido de hidrógeno", i: "Dióxido de dihidrógeno", cat: "peroxidos" },
+            { f: "Na2O2", s: "Peróxido de sodio", i: "Dióxido de disodio", cat: "peroxidos" },
+            { f: "K2O2", s: "Peróxido de potasio", i: "Dióxido de dipotasio", cat: "peroxidos" },
+            { f: "CaO2", s: "Peróxido de calcio", i: "Dióxido de calcio", cat: "peroxidos" },
+            { f: "BaO2", s: "Peróxido de bario", i: "Dióxido de bario", cat: "peroxidos" },
+            { f: "MgO2", s: "Peróxido de magnesio", i: "Dióxido de magnesio", cat: "peroxidos" },
 
-            // HIDRUROS METÁLICOS
-            { formula: "LiH", stock: "Hidruro de litio", sistem: "Monohidruro de litio" },
-            { formula: "NaH", stock: "Hidruro de sodio", sistem: "Monohidruro de sodio" },
-            { formula: "KH", stock: "Hidruro de potasio", sistem: "Monohidruro de potasio" },
-            { formula: "MgH2", stock: "Hidruro de magnesio", sistem: "Dihidruro de magnesio" },
-            { formula: "CaH2", stock: "Hidruro de calcio", sistem: "Dihidruro de calcio" },
-            { formula: "AlH3", stock: "Hidruro de aluminio", sistem: "Trihidruro de aluminio" },
-            { formula: "FeH2", stock: "Hidruro de hierro (II)", sistem: "Dihidruro de hierro" },
-            { formula: "FeH3", stock: "Hidruro de hierro (III)", sistem: "Trihidruro de hierro" },
-            { formula: "CuH", stock: "Hidruro de cobre (I)", sistem: "Monohidruro de cobre" },
-            { formula: "CuH2", stock: "Hidruro de cobre (II)", sistem: "Dihidruro de cobre" },
-
-            // HIDRUROS NO METÁLICOS (Ácidos Hidrácidos)
-            { formula: "HF", stock: "Fluoruro de hidrógeno", sistem: "Fluoruro de hidrógeno" },
-            { formula: "HCl", stock: "Cloruro de hidrógeno", sistem: "Cloruro de hidrógeno" },
-            { formula: "HBr", stock: "Bromuro de hidrógeno", sistem: "Bromuro de hidrógeno" },
-            { formula: "HI", stock: "Yoduro de hidrógeno", sistem: "Yoduro de hidrógeno" },
-            { formula: "H2S", stock: "Sulfuro de hidrógeno", sistem: "Sulfuro de hidrógeno" },
-            { formula: "H2Se", stock: "Seleniuro de hidrógeno", sistem: "Seleniuro de hidrógeno" },
-            { formula: "H2Te", stock: "Telururo de hidrógeno", sistem: "Telururo de hidrógeno" },
-            
-            // HIDRUROS NO METÁLICOS (Volátiles especiales)
-            { formula: "NH3", stock: "(Amoniaco)", sistem: "Trihidruro de nitrógeno" },
-            { formula: "PH3", stock: "(Fosfina)", sistem: "Trihidruro de fósforo" },
-            { formula: "AsH3", stock: "(Arsina)", sistem: "Trihidruro de arsénico" },
-            { formula: "SbH3", stock: "(Estibina)", sistem: "Trihidruro de antimonio" },
-            { formula: "CH4", stock: "(Metano)", sistem: "Tetrahidruro de carbono" },
-            { formula: "SiH4", stock: "(Silano)", sistem: "Tetrahidruro de silicio" },
-            { formula: "BH3", stock: "(Borano)", sistem: "Trihidruro de boro" },
-            
-            // SALES BINARIAS (Metal + No Metal)
-            { formula: "NaCl", stock: "Cloruro de sodio", sistem: "Cloruro de sodio" },
-            { formula: "KCl", stock: "Cloruro de potasio", sistem: "Cloruro de potasio" },
-            { formula: "MgCl2", stock: "Cloruro de magnesio", sistem: "Dicloruro de magnesio" },
-            { formula: "AlCl3", stock: "Cloruro de aluminio", sistem: "Tricloruro de aluminio" },
-            { formula: "AgCl", stock: "Cloruro de plata", sistem: "Cloruro de plata" },
-            { formula: "CaF2", stock: "Fluoruro de calcio", sistem: "Difluoruro de calcio" },
-            { formula: "MgI2", stock: "Yoduro de magnesio", sistem: "Diyoduro de magnesio" },
-            { formula: "Na2S", stock: "Sulfuro de sodio", sistem: "Sulfuro de disodio" },
-            { formula: "ZnS", stock: "Sulfuro de cinc", sistem: "Monosulfuro de cinc" },
-            { formula: "Al2S3", stock: "Sulfuro de aluminio", sistem: "Trisulfuro de dialuminio" },
-            { formula: "FeS", stock: "Sulfuro de hierro (II)", sistem: "Monosulfuro de hierro" },
-            { formula: "Fe2S3", stock: "Sulfuro de hierro (III)", sistem: "Trisulfuro de dihierro" },
-            { formula: "CuBr", stock: "Bromuro de cobre (I)", sistem: "Monobromuro de cobre" },
-            { formula: "CuBr2", stock: "Bromuro de cobre (II)", sistem: "Dibromuro de cobre" },
-            { formula: "SnS", stock: "Sulfuro de estaño (II)", sistem: "Monosulfuro de estaño" },
-            { formula: "SnS2", stock: "Sulfuro de estaño (IV)", sistem: "Disulfuro de estaño" },
-            { formula: "PbI2", stock: "Yoduro de plomo (II)", sistem: "Diyoduro de plomo" },
-            { formula: "PbI4", stock: "Yoduro de plomo (IV)", sistem: "Tetrayoduro de plomo" },
-            { formula: "K3P", stock: "Fosfuro de potasio", sistem: "Fosfuro de tripotasio" },
-            { formula: "Ca3N2", stock: "Nitrato de calcio", sistem: "Dinitruro de tricalcio" },
-            { formula: "Na3As", stock: "Arseniuro de sodio", sistem: "Arseniuro de trisodio" },
-            { formula: "FeCl2", stock: "Cloruro de hierro (II)", sistem: "Dicloruro de hierro" },
-            { formula: "FeCl3", stock: "Cloruro de hierro (III)", sistem: "Tricloruro de hierro" },
-            { formula: "CrCl2", stock: "Cloruro de cromo (II)", sistem: "Dicloruro de cromo" },
-            { formula: "CrCl3", stock: "Cloruro de cromo (III)", sistem: "Tricloruro de cromo" },
-            { formula: "MnF2", stock: "Fluoruro de manganeso (II)", sistem: "Difluoruro de manganeso" },
-            { formula: "MnF3", stock: "Fluoruro de manganeso (III)", sistem: "Trifluoruro de manganeso" },
-            
-            // COMPUESTOS ENTRE NO METALES
-            { formula: "NCl3", stock: "(No se usa Stock)", sistem: "Tricloruro de nitrógeno" },
-            { formula: "CCl4", stock: "(No se usa Stock)", sistem: "Tetracloruro de carbono" },
-            { formula: "SiF4", stock: "(No se usa Stock)", sistem: "Tetrafluoruro de silicio" },
-            { formula: "PCl3", stock: "(No se usa Stock)", sistem: "Tricloruro de fósforo" },
-            { formula: "PCl5", stock: "(No se usa Stock)", sistem: "Pentacloruro de fósforo" },
-            { formula: "SF6", stock: "(No se usa Stock)", sistem: "Hexafluoruro de azufre" },
-            { formula: "CS2", stock: "(No se usa Stock)", sistem: "Disulfuro de carbono" },
-            { formula: "BBr3", stock: "(No se usa Stock)", sistem: "Tribromuro de boro" },
-            { formula: "SiO2", stock: "(No se usa Stock)", sistem: "Dióxido de silicio" },
-            { formula: "ICl", stock: "(No se usa Stock)", sistem: "Monocloruro de yodo" },
-            { formula: "IBr5", stock: "(No se usa Stock)", sistem: "Pentabromuro de yodo" },
-
-            // Para llegar a los 200+ repeticiones de los más comunes y variables
-            // Repeticiones de valencia variable (para que salgan más a menudo)
-            { formula: "Fe2O3", stock: "Óxido de hierro (III)", sistem: "Trióxido de dihierro" },
-            { formula: "CuO", stock: "Óxido de cobre (II)", sistem: "Monóxido de cobre" },
-            { formula: "SnO2", stock: "Óxido de estaño (IV)", sistem: "Dióxido de estaño" },
-            { formula: "PbO", stock: "Óxido de plomo (II)", sistem: "Monóxido de plomo" },
-            { formula: "Cr2O3", stock: "Óxido de cromo (III)", sistem: "Trióxido de dicromo" },
-            { formula: "MnO2", stock: "Óxido de manganeso (IV)", sistem: "Dióxido de manganeso" },
-            { formula: "Cl2O7", stock: "Óxido de cloro (VII)", sistem: "Heptaóxido de dicloro" },
-            { formula: "N2O5", stock: "Óxido de nitrógeno (V)", sistem: "Pentaóxido de dinitrógeno" },
-            { formula: "FeCl3", stock: "Cloruro de hierro (III)", sistem: "Tricloruro de hierro" },
-            { formula: "CuBr", stock: "Bromuro de cobre (I)", sistem: "Monobromuro de cobre" },
-            { formula: "SnS2", stock: "Sulfuro de estaño (IV)", sistem: "Disulfuro de estaño" },
-            { formula: "PCl5", stock: "(No se usa Stock)", sistem: "Pentacloruro de fósforo" },
-            { formula: "CO2", stock: "Óxido de carbono (IV)", sistem: "Dióxido de carbono" },
-            { formula: "SO3", stock: "Óxido de azufre (VI)", sistem: "Trióxido de azufre" },
-            { formula: "HCl", stock: "Cloruro de hidrógeno", sistem: "Cloruro de hidrógeno" },
-            { formula: "H2S", stock: "Sulfuro de hidrógeno", sistem: "Sulfuro de hidrógeno" },
-            { formula: "NH3", stock: "(Amoniaco)", sistem: "Trihidruro de nitrógeno" },
-            { formula: "CH4", stock: "(Metano)", sistem: "Tetrahidruro de carbono" },
-            { formula: "Na2O2", stock: "Peróxido de sodio", sistem: "Dióxido de disodio" },
-            { formula: "H2O2", stock: "Peróxido de hidrógeno", sistem: "Dióxido de dihidrógeno" },
-
-            // Más repeticiones para asegurar la variedad total de 200+
-            { formula: "K2O", stock: "Óxido de potasio", sistem: "Monóxido de dipotasio" },
-            { formula: "MgO", stock: "Óxido de magnesio", sistem: "Monóxido de magnesio" },
-            { formula: "ZnO", stock: "Óxido de cinc", sistem: "Monóxido de cinc" },
-            { formula: "Ag2O", stock: "Óxido de plata", sistem: "Monóxido de diplata" },
-            { formula: "NiO", stock: "Óxido de níquel (II)", sistem: "Monóxido de níquel" },
-            { formula: "Ni2O3", stock: "Óxido de níquel (III)", sistem: "Trióxido de diníquel" },
-            { formula: "HgO", stock: "Óxido de mercurio (II)", sistem: "Monóxido de mercurio" },
-            { formula: "CO", stock: "Óxido de carbono (II)", sistem: "Monóxido de carbono" },
-            { formula: "SO2", stock: "Óxido de azufre (IV)", sistem: "Dióxido de azufre" },
-            { formula: "N2O", stock: "Óxido de nitrógeno (I)", sistem: "Monóxido de dinitrógeno" },
-            { formula: "NO", stock: "Óxido de nitrógeno (II)", sistem: "Monóxido de nitrógeno" },
-            { formula: "Cl2O3", stock: "Óxido de cloro (III)", sistem: "Trióxido de dicloro" },
-            { formula: "P2O3", stock: "Óxido de fósforo (III)", sistem: "Trióxido de difósforo" },
-            { formula: "P2O5", stock: "Óxido de fósforo (V)", sistem: "Pentaóxido de difósforo" },
-            { formula: "CaO2", stock: "Peróxido de calcio", sistem: "Dióxido de calcio" },
-            { formula: "LiH", stock: "Hidruro de litio", sistem: "Monohidruro de litio" },
-            { formula: "MgH2", stock: "Hidruro de magnesio", sistem: "Dihidruro de magnesio" },
-            { formula: "AlH3", stock: "Hidruro de aluminio", sistem: "Trihidruro de aluminio" },
-            { formula: "CuH", stock: "Hidruro de cobre (I)", sistem: "Monohidruro de cobre" },
-            { formula: "HI", stock: "Yoduro de hidrógeno", sistem: "Yoduro de hidrógeno" },
-            { formula: "PH3", stock: "(Fosfina)", sistem: "Trihidruro de fósforo" },
-            { formula: "NaCl", stock: "Cloruro de sodio", sistem: "Cloruro de sodio" },
-            { formula: "MgCl2", stock: "Cloruro de magnesio", sistem: "Dicloruro de magnesio" },
-            { formula: "AlCl3", stock: "Cloruro de aluminio", sistem: "Tricloruro de aluminio" },
-            { formula: "Na2S", stock: "Sulfuro de sodio", sistem: "Sulfuro de disodio" },
-            { formula: "ZnS", stock: "Sulfuro de cinc", sistem: "Monosulfuro de cinc" },
-            { formula: "FeS", stock: "Sulfuro de hierro (II)", sistem: "Monosulfuro de hierro" },
-            { formula: "SnS", stock: "Sulfuro de estaño (II)", sistem: "Monosulfuro de estaño" },
-            { formula: "PbI2", stock: "Yoduro de plomo (II)", sistem: "Diyoduro de plomo" },
-            { formula: "K3P", stock: "Fosfuro de potasio", sistem: "Fosfuro de tripotasio" },
-            { formula: "NCl3", stock: "(No se usa Stock)", sistem: "Tricloruro de nitrógeno" },
-            { formula: "SF6", stock: "(No se usa Stock)", sistem: "Hexafluoruro de azufre" },
-            { formula: "CS2", stock: "(No se usa Stock)", sistem: "Disulfuro de carbono" },
-            { formula: "SiO2", stock: "(No se usa Stock)", sistem: "Dióxido de silicio" },
-
-            // Repeticiones adicionales para superar los 200
-            { formula: "FeO", stock: "Óxido de hierro (II)", sistem: "Monóxido de hierro" },
-            { formula: "Cu2O", stock: "Óxido de cobre (I)", sistem: "Monóxido de dicobre" },
-            { formula: "SnO", stock: "Óxido de estaño (II)", sistem: "Monóxido de estaño" },
-            { formula: "PbO2", stock: "Óxido de plomo (IV)", sistem: "Dióxido de plomo" },
-            { formula: "CrO", stock: "Óxido de cromo (II)", sistem: "Monóxido de cromo" },
-            { formula: "MnO", stock: "Óxido de manganeso (II)", sistem: "Monóxido de manganeso" },
-            { formula: "Mn2O7", stock: "Óxido de manganeso (VII)", sistem: "Heptaóxido de dimanganeso" },
-            { formula: "Hg2O", stock: "Óxido de mercurio (I)", sistem: "Monóxido de dimercurio" },
-            { formula: "N2O3", stock: "Óxido de nitrógeno (III)", sistem: "Trióxido de dinitrógeno" },
-            { formula: "Cl2O", stock: "Óxido de cloro (I)", sistem: "Monóxido de dicloro" },
-            { formula: "I2O5", stock: "Óxido de yodo (V)", sistem: "Pentaóxido de diyodo" },
-            { formula: "BaO2", stock: "Peróxido de bario", sistem: "Dióxido de bario" },
-            { formula: "FeH2", stock: "Hidruro de hierro (II)", sistem: "Dihidruro de hierro" },
-            { formula: "CuH2", stock: "Hidruro de cobre (II)", sistem: "Dihidruro de cobre" },
-            { formula: "CaF2", stock: "Fluoruro de calcio", sistem: "Difluoruro de calcio" },
-            { formula: "MgI2", stock: "Yoduro de magnesio", sistem: "Diyoduro de magnesio" },
-            { formula: "Fe2S3", stock: "Sulfuro de hierro (III)", sistem: "Trisulfuro de dihierro" },
-            { formula: "CuBr2", stock: "Bromuro de cobre (II)", sistem: "Dibromuro de cobre" },
-            { formula: "PbI4", stock: "Yoduro de plomo (IV)", sistem: "Tetrayoduro de plomo" },
-            { formula: "Ca3N2", stock: "Nitrato de calcio", sistem: "Dinitruro de tricalcio" },
-            { formula: "CrCl2", stock: "Cloruro de cromo (II)", sistem: "Dicloruro de cromo" },
-            { formula: "MnF3", stock: "Fluoruro de manganeso (III)", sistem: "Trifluoruro de manganeso" },
-            { formula: "CCl4", stock: "(No se usa Stock)", sistem: "Tetracloruro de carbono" },
-            { formula: "BBr3", stock: "(No se usa Stock)", sistem: "Tribromuro de boro" },
-            { formula: "ICl", stock: "(No se usa Stock)", sistem: "Monocloruro de yodo" },
-            
-            // Más repeticiones finales
-            { formula: "Fe2O3", stock: "Óxido de hierro (III)", sistem: "Trióxido de dihierro" },
-            { formula: "N2O5", stock: "Óxido de nitrógeno (V)", sistem: "Pentaóxido de dinitrógeno" },
-            { formula: "K2O2", stock: "Peróxido de potasio", sistem: "Dióxido de dipotasio" },
-            { formula: "NaH", stock: "Hidruro de sodio", sistem: "Monohidruro de sodio" },
-            { formula: "SO3", stock: "Óxido de azufre (VI)", sistem: "Trióxido de azufre" },
-            { formula: "AlCl3", stock: "Cloruro de aluminio", sistem: "Tricloruro de aluminio" },
-            { formula: "PCl5", stock: "(No se usa Stock)", sistem: "Pentacloruro de fósforo" },
-            { formula: "MnO2", stock: "Óxido de manganeso (IV)", sistem: "Dióxido de manganeso" },
-            { formula: "SnO2", stock: "Óxido de estaño (IV)", sistem: "Dióxido de estaño" },
-            { formula: "FeH3", stock: "Hidruro de hierro (III)", sistem: "Trihidruro de hierro" },
-            { formula: "HBr", stock: "Bromuro de hidrógeno", sistem: "Bromuro de hidrógeno" },
-            { formula: "AgCl", stock: "Cloruro de plata", sistem: "Cloruro de plata" },
-            { formula: "SiO2", stock: "(No se usa Stock)", sistem: "Dióxido de silicio" },
-            { formula: "CrO3", stock: "Óxido de cromo (VI)", sistem: "Trióxido de cromo" },
-            { formula: "Ni2O3", stock: "Óxido de níquel (III)", sistem: "Trióxido de diníquel" },
-            { formula: "Li2O", stock: "Óxido de litio", sistem: "Monóxido de dilitio" },
-            { formula: "CH4", stock: "(Metano)", sistem: "Tetrahidruro de carbono" },
-            { formula: "CaH2", stock: "Hidruro de calcio", sistem: "Dihidruro de calcio" },
-            { formula: "Al2O3", stock: "Óxido de aluminio", sistem: "Trióxido de dialuminio" },
-            { formula: "CO2", stock: "Óxido de carbono (IV)", sistem: "Dióxido de carbono" },
-            { formula: "H2O2", stock: "Peróxido de hidrógeno", sistem: "Dióxido de dihidrógeno" },
-            { formula: "HCl", stock: "Cloruro de hidrógeno", sistem: "Cloruro de hidrógeno" },
-            { formula: "Al2S3", stock: "Sulfuro de aluminio", sistem: "Trisulfuro de dialuminio" },
-            { formula: "PCl3", stock: "(No se usa Stock)", sistem: "Tricloruro de fósforo" },
-            { formula: "Ca3N2", stock: "Nitrato de calcio", sistem: "Dinitruro de tricalcio" },
-            { formula: "CuO", stock: "Óxido de cobre (II)", sistem: "Monóxido de cobre" },
-            { formula: "PbO", stock: "Óxido de plomo (II)", sistem: "Monóxido de plomo" },
-            { formula: "SnS2", stock: "Sulfuro de estaño (IV)", sistem: "Disulfuro de estaño" },
-            { formula: "Na2O2", stock: "Peróxido de sodio", sistem: "Dióxido de disodio" },
-            { formula: "FeCl2", stock: "Cloruro de hierro (II)", sistem: "Dicloruro de hierro" },
-            { formula: "Fe2O3", stock: "Óxido de hierro (III)", sistem: "Trióxido de dihierro" },
-            { formula: "Cr2O3", stock: "Óxido de cromo (III)", sistem: "Trióxido de dicromo" },
-            { formula: "H2S", stock: "Sulfuro de hidrógeno", sistem: "Sulfuro de hidrógeno" },
-            { formula: "NH3", stock: "(Amoniaco)", sistem: "Trihidruro de nitrógeno" },
-            { formula: "MgH2", stock: "Hidruro de magnesio", sistem: "Dihidruro de magnesio" },
-            { formula: "PCl5", stock: "(No se usa Stock)", sistem: "Pentacloruro de fósforo" },
-            { formula: "CuBr", stock: "Bromuro de cobre (I)", sistem: "Monobromuro de cobre" },
-            { formula: "CaO", stock: "Óxido de calcio", sistem: "Monóxido de calcio" },
-            { formula: "Cl2O7", stock: "Óxido de cloro (VII)", sistem: "Heptaóxido de dicloro" },
-            { formula: "IBr5", stock: "(No se usa Stock)", sistem: "Pentabromuro de yodo" },
-            { formula: "NiO", stock: "Óxido de níquel (II)", sistem: "Monóxido de níquel" },
-            { formula: "Ag2O", stock: "Óxido de plata", sistem: "Monóxido de diplata" },
-            { formula: "N2O", stock: "Óxido de nitrógeno (I)", sistem: "Monóxido de dinitrógeno" },
-            { formula: "MnF2", stock: "Fluoruro de manganeso (II)", sistem: "Difluoruro de manganeso" },
-            { formula: "BBr3", stock: "(No se usa Stock)", sistem: "Tribromuro de boro" },
-            { formula: "SnO", stock: "Óxido de estaño (II)", sistem: "Monóxido de estaño" },
-            { formula: "PbI4", stock: "Yoduro de plomo (IV)", sistem: "Tetrayoduro de plomo" },
-            { formula: "BaO", stock: "Óxido de bario", sistem: "Monóxido de bario" },
-            { formula: "NO", stock: "Óxido de nitrógeno (II)", sistem: "Monóxido de nitrógeno" },
-            { formula: "Cu2O", stock: "Óxido de cobre (I)", sistem: "Monóxido de dicobre" },
-            { formula: "H2Se", stock: "Seleniuro de hidrógeno", sistem: "Seleniuro de hidrógeno" },
-            { formula: "K3P", stock: "Fosfuro de potasio", sistem: "Fosfuro de tripotasio" },
-            { formula: "SiF4", stock: "(No se usa Stock)", sistem: "Tetrafluoruro de silicio" },
+            // SALES
+            { f: "NaCl", s: "Cloruro de sodio", i: "Cloruro de sodio", cat: "sales" },
+            { f: "KCl", s: "Cloruro de potasio", i: "Cloruro de potasio", cat: "sales" },
+            { f: "CaCl2", s: "Cloruro de calcio", i: "Dicloruro de calcio", cat: "sales" },
+            { f: "FeCl2", s: "Cloruro de hierro (II)", i: "Dicloruro de hierro", cat: "sales" },
+            { f: "FeCl3", s: "Cloruro de hierro (III)", i: "Tricloruro de hierro", cat: "sales" },
+            { f: "AlCl3", s: "Cloruro de aluminio", i: "Tricloruro de aluminio", cat: "sales" },
+            { f: "CuCl", s: "Cloruro de cobre (I)", i: "Monocloruro de cobre", cat: "sales" },
+            { f: "CuCl2", s: "Cloruro de cobre (II)", i: "Dicloruro de cobre", cat: "sales" },
+            { f: "AgBr", s: "Bromuro de plata", i: "Bromuro de plata", cat: "sales" },
+            { f: "KI", s: "Yoduro de potasio", i: "Yoduro de potasio", cat: "sales" },
+            { f: "Na2S", s: "Sulfuro de sodio", i: "Sulfuro de disodio", cat: "sales" },
+            { f: "CaS", s: "Sulfuro de calcio", i: "Monosulfuro de calcio", cat: "sales" },
+            { f: "FeS", s: "Sulfuro de hierro (II)", i: "Monosulfuro de hierro", cat: "sales" },
+            { f: "Fe2S3", s: "Sulfuro de hierro (III)", i: "Trisulfuro de dihierro", cat: "sales" },
+            { f: "ZnS", s: "Sulfuro de cinc", i: "Monosulfuro de cinc", cat: "sales" },
+            { f: "PbS", s: "Sulfuro de plomo (II)", i: "Monosulfuro de plomo", cat: "sales" },
+            { f: "Ag2S", s: "Sulfuro de plata", i: "Sulfuro de diplata", cat: "sales" },
+            { f: "Li3N", s: "Nitruro de litio", i: "Nitruro de trilitio", cat: "sales" },
+            { f: "Mg3N2", s: "Nitruro de magnesio", i: "Dinitruro de trimagnesio", cat: "sales" },
+            { f: "AlN", s: "Nitruro de aluminio", i: "Mononitruro de aluminio", cat: "sales" },
+            { f: "Ca3P2", s: "Fosfuro de calcio", i: "Difosfuro de tricalcio", cat: "sales" },
+            { f: "PCl3", s: "(No se usa Stock)", i: "Tricloruro de fósforo", cat: "sales" },
+            { f: "PCl5", s: "(No se usa Stock)", i: "Pentacloruro de fósforo", cat: "sales" }
         ];
 
         let currentCompound = {};
         let score = { correct: 0, wrong: 0 };
-        let questionType = 0; // 0: Formular a partir del nombre; 1: Nombrar a partir de la fórmula
+        let questionType = 0;
+        let errorHistory = [];
+        let categoryStats = {};
+        let selectedCategory = 'all';
 
-        // --- Elementos del DOM ---
+        // Elementos DOM
         const challengeElement = document.getElementById('challenge');
         const questionTypeElement = document.getElementById('question-type');
         const feedbackElement = document.getElementById('feedback');
-
         const inputFormula = document.getElementById('answer-formula');
         const inputStock = document.getElementById('answer-stock');
         const inputSistem = document.getElementById('answer-sistem');
-
         const containerStock = document.getElementById('container-stock');
         const containerSistem = document.getElementById('container-sistem');
         const containerFormula = document.getElementById('container-formula');
-
         const btnCheck = document.getElementById('check-button');
         const btnNext = document.getElementById('next-button');
+        const btnHint = document.getElementById('hint-button');
+        const categoryFilter = document.getElementById('category-filter');
+        const errorHistoryDiv = document.getElementById('error-history');
+        const errorList = document.getElementById('error-list');
+        const statsContainer = document.getElementById('stats-container');
 
-        // --- Funciones de Utilidad ---
+        // Cargar datos del localStorage
+        function loadData() {
+            const saved = localStorage.getItem('chemistryMasterData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                score = data.score || { correct: 0, wrong: 0 };
+                errorHistory = data.errorHistory || [];
+                categoryStats = data.categoryStats || {};
+            }
+            updateScore();
+            updateErrorHistory();
+            updateStats();
+        }
 
-        // Limpia y normaliza la entrada del usuario para comparación.
+        // Guardar datos en localStorage
+        function saveData() {
+            localStorage.setItem('chemistryMasterData', JSON.stringify({
+                score,
+                errorHistory,
+                categoryStats
+            }));
+        }
+
         function normalize(text) {
             if (!text) return "";
             return text.toLowerCase().trim()
-                .replace(/[\s\(\)]+/g, ' ') // Quita paréntesis, los reemplaza con espacio
-                .replace(/de\s+/g, 'de ') // Asegura 'de' seguido de un solo espacio
-                .replace(/\s+/g, ' ') // Quita espacios múltiples y los deja en uno
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quita acentos
+                .replace(/[\s\(\)]+/g, ' ')
+                .replace(/\s+de\s+/g, 'de')
+                .replace(/\s+/g, ' ')
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         }
 
-        // Actualiza el marcador
         function updateScore() {
             document.getElementById('correct-count').textContent = score.correct;
             document.getElementById('wrong-count').textContent = score.wrong;
             document.getElementById('total-count').textContent = score.correct + score.wrong;
         }
 
-        // Limpia los campos de entrada y el feedback
+        function updateErrorHistory() {
+            if (errorHistory.length === 0) {
+                errorHistoryDiv.classList.add('hidden');
+                return;
+            }
+            errorHistoryDiv.classList.remove('hidden');
+            errorList.innerHTML = errorHistory.map(err => 
+                `<div class="text-xs bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-800">
+                    <div class="font-bold">${err.formula}</div>
+                    <div class="text-gray-600 dark:text-gray-400">${err.correct}</div>
+                </div>`
+            ).join('');
+        }
+
+        function addError(formula, correctAnswer) {
+            errorHistory.unshift({ formula, correct: correctAnswer });
+            if (errorHistory.length > 5) errorHistory.pop();
+            updateErrorHistory();
+            saveData();
+        }
+
+        function updateStats() {
+            const categories = ['hidruros', 'oxidos', 'peroxidos', 'sales'];
+            statsContainer.innerHTML = categories.map(cat => {
+                const stats = categoryStats[cat] || { correct: 0, wrong: 0 };
+                const total = stats.correct + stats.wrong;
+                const percentage = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
+                return `<div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-700 dark:text-gray-300 capitalize">${cat}:</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-gray-500">${stats.correct}/${total}</span>
+                        <span class="font-bold text-primary">${percentage}%</span>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function updateCategoryStats(category, isCorrect) {
+            if (!categoryStats[category]) {
+                categoryStats[category] = { correct: 0, wrong: 0 };
+            }
+            if (isCorrect) {
+                categoryStats[category].correct++;
+            } else {
+                categoryStats[category].wrong++;
+            }
+            updateStats();
+            saveData();
+        }
+
         function resetInterface() {
             inputFormula.value = '';
             inputStock.value = '';
             inputSistem.value = '';
-            feedbackElement.className = 'feedback';
+            feedbackElement.className = 'mt-4 hidden rounded-xl p-4 text-sm font-medium fade-in';
             feedbackElement.textContent = '';
             btnCheck.disabled = false;
+            btnCheck.classList.remove('opacity-50', 'cursor-not-allowed');
             btnNext.disabled = true;
+            btnNext.classList.add('opacity-50', 'cursor-not-allowed');
         }
 
-        // Genera un nuevo ejercicio
+        function getFilteredCompounds() {
+            if (selectedCategory === 'all') return compounds;
+            return compounds.filter(c => c.cat === selectedCategory);
+        }
+
         function generateExercise() {
             resetInterface();
-            
-            // Seleccionar un compuesto al azar
-            const index = Math.floor(Math.random() * compounds.length);
-            currentCompound = compounds[index];
-            
-            // Seleccionar el tipo de pregunta (50% formular, 50% nombrar)
-            questionType = Math.random() < 0.5 ? 0 : 1; 
+            const available = getFilteredCompounds();
+            if (available.length === 0) {
+                alert('No hay compuestos en esta categoría');
+                return;
+            }
+            const index = Math.floor(Math.random() * available.length);
+            currentCompound = available[index];
+            questionType = Math.random() < 0.5 ? 0 : 1;
 
             if (questionType === 0) {
-                // TIPO 0: FORMULAR (Pregunto por el nombre de Stock o Sistemática)
-                const nameType = Math.random() < 0.5 ? 'stock' : 'sistem'; // Pregunto por Stock o Sistemática
-                const questionName = nameType === 'stock' ? currentCompound.stock : currentCompound.sistem;
-                
+                const nameType = Math.random() < 0.5 ? 'stock' : 'sistem';
+                let questionName = nameType === 'stock' ? currentCompound.s : currentCompound.i;
+                if(currentCompound.s.includes("No se usa") && nameType === 'stock') {
+                    questionName = currentCompound.i;
+                }
+
                 questionTypeElement.textContent = "TAREA: FORMULAR";
-                challengeElement.innerHTML = `Escribe la fórmula para: <strong>${questionName}</strong>`;
+                challengeElement.innerHTML = `Escribe la fórmula para:<br><span class="text-primary dark:text-blue-300 mt-2 block">${questionName}</span>`;
                 
-                // Mostrar solo el campo de Fórmula
-                containerFormula.classList.remove('hidden-input');
-                containerStock.classList.add('hidden-input');
-                containerSistem.classList.add('hidden-input');
+                containerFormula.classList.remove('hidden');
+                containerStock.classList.add('hidden');
+                containerSistem.classList.add('hidden');
+                setTimeout(() => inputFormula.focus(), 100);
 
             } else {
-                // TIPO 1: NOMBRAR (Pregunto por la fórmula)
                 questionTypeElement.textContent = "TAREA: NOMBRAR";
+                const formattedFormula = currentCompound.f.replace(/(\d+)/g, '<sub>$1</sub>');
+                challengeElement.innerHTML = `Nombra el compuesto:<br><span class="text-primary dark:text-blue-300 mt-2 block text-3xl">${formattedFormula}</span>`;
                 
-                // Formato de subíndices para la fórmula en la pregunta
-                const formattedFormula = currentCompound.formula.replace(/(\d+)/g, '<sub>$1</sub>'); 
-                challengeElement.innerHTML = `Nombra el siguiente compuesto: <strong>${formattedFormula}</strong>`;
+                containerFormula.classList.add('hidden');
                 
-                // Mostrar solo los campos de Nomenclatura
-                containerFormula.classList.add('hidden-input');
-                containerStock.classList.remove('hidden-input');
-                containerSistem.classList.remove('hidden-input');
+                if(currentCompound.s.includes("No se usa")) {
+                    containerStock.classList.add('hidden');
+                    containerSistem.classList.remove('hidden');
+                } else {
+                    containerStock.classList.remove('hidden');
+                    containerSistem.classList.remove('hidden');
+                }
+                
+                setTimeout(() => {
+                    if(!containerStock.classList.contains('hidden')) inputStock.focus();
+                    else inputSistem.focus();
+                }, 100);
             }
         }
 
-        // Comprueba la respuesta del usuario
+        function showHint() {
+            const categoryNames = {
+                'hidruros': 'Hidruro',
+                'oxidos': 'Óxido',
+                'peroxidos': 'Peróxido',
+                'sales': 'Sal Binaria'
+            };
+            const hint = `💡 Tipo: ${categoryNames[currentCompound.cat]}`;
+            alert(hint);
+        }
+
         function checkAnswer() {
+            // Validar entrada
+            if (questionType === 0 && !inputFormula.value.trim()) {
+                alert('Por favor, escribe una fórmula');
+                return;
+            }
+            if (questionType === 1) {
+                if (!containerStock.classList.contains('hidden') && !inputStock.value.trim()) {
+                    alert('Por favor, completa la nomenclatura Stock');
+                    return;
+                }
+                if (!inputSistem.value.trim()) {
+                    alert('Por favor, completa la nomenclatura Sistemática');
+                    return;
+                }
+            }
+
             btnCheck.disabled = true;
+            btnCheck.classList.add('opacity-50', 'cursor-not-allowed');
             btnNext.disabled = false;
+            btnNext.classList.remove('opacity-50', 'cursor-not-allowed');
+            
             let isCorrect = true;
             let message = '';
             
             if (questionType === 0) {
-                // Comprobar FÓRMULA
                 const userAnswer = normalize(inputFormula.value);
-                const correctAnswer = normalize(currentCompound.formula);
+                const correctAnswer = normalize(currentCompound.f);
 
                 if (userAnswer === correctAnswer) {
                     message = '✅ ¡Fórmula Correcta!';
                 } else {
-                    message = `❌ ¡Incorrecto! La fórmula correcta es: <strong>${currentCompound.formula}</strong>`;
+                    message = `❌ ¡Incorrecto! La fórmula correcta es: ${currentCompound.f}`;
                     isCorrect = false;
+                    addError(currentCompound.f, `Stock: ${currentCompound.s} | Sist: ${currentCompound.i}`);
                 }
-                
             } else {
-                // Comprobar NOMBRES (Stock y Sistemática)
-                const userStock = normalize(inputStock.value);
                 const userSistem = normalize(inputSistem.value);
+                const correctSistem = normalize(currentCompound.i);
                 
-                // Si la respuesta correcta es un nombre aceptado (como Amoniaco o No se usa Stock), se debe comparar con esa cadena
-                const correctStock = normalize(currentCompound.stock);
-                const correctSistem = normalize(currentCompound.sistem);
-                
-                const isStockCorrect = userStock === correctStock;
-                const isSistemCorrect = userSistem === correctSistem;
+                let isStockCorrect = true;
+                let stockMsg = '';
 
+                if(!currentCompound.s.includes("No se usa")) {
+                    const userStock = normalize(inputStock.value);
+                    const correctStock = normalize(currentCompound.s);
+                    isStockCorrect = userStock === correctStock;
+                    stockMsg = isStockCorrect ? '✅ Stock correcta.<br>' : `❌ Stock incorrecta. (Correcto: ${currentCompound.s})<br>`;
+                } else {
+                    stockMsg = 'ℹ️ Stock no aplica.<br>';
+                }
+
+                const isSistemCorrect = userSistem === correctSistem;
                 isCorrect = isStockCorrect && isSistemCorrect;
 
                 if (isCorrect) {
-                    message = '✅ ¡Ambas nomenclaturas son correctas!';
+                    message = '✅ ¡Respuesta Correcta!';
                 } else {
-                    // Si falla, da el feedback detallado
-                    message = '❌ Resultado: ';
-                    
-                    message += '<br>Stock: ' + (isStockCorrect ? '✅' : `❌ (Correcto: <strong>${currentCompound.stock}</strong>)`);
-                    message += '<br>Sistemática: ' + (isSistemCorrect ? '✅' : `❌ (Correcto: <strong>${currentCompound.sistem}</strong>)`);
+                    message = 'Resultado:<br>' + stockMsg;
+                    message += isSistemCorrect ? '✅ Sistemática correcta.' : `❌ Sistemática incorrecta. (Correcto: ${currentCompound.i})`;
+                    addError(currentCompound.f, `Stock: ${currentCompound.s} | Sist: ${currentCompound.i}`);
                 }
             }
             
-            // Actualizar puntuación y feedback visual
+            feedbackElement.classList.remove('hidden');
+            feedbackElement.classList.remove('bg-green-100', 'text-green-800', 'dark:bg-green-900/30', 'dark:text-green-200', 'bg-red-100', 'text-red-800', 'dark:bg-red-900/30', 'dark:text-red-200');
+            
             if (isCorrect) {
                 score.correct++;
-                feedbackElement.classList.add('correct');
+                feedbackElement.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900/30', 'dark:text-green-200', 'border', 'border-green-200');
             } else {
                 score.wrong++;
-                feedbackElement.classList.add('incorrect');
+                feedbackElement.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/30', 'dark:text-red-200', 'border', 'border-red-200');
             }
 
             feedbackElement.innerHTML = message;
             updateScore();
+            updateCategoryStats(currentCompound.cat, isCorrect);
+            saveData();
+            btnNext.focus();
         }
 
-        // --- Inicialización ---
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            updateScore();
+            loadData();
             generateExercise();
             
-            // Event Listeners
             btnCheck.addEventListener('click', checkAnswer);
             btnNext.addEventListener('click', generateExercise);
+            btnHint.addEventListener('click', showHint);
             
-            // Permite presionar Enter para comprobar
+            categoryFilter.addEventListener('change', (e) => {
+                selectedCategory = e.target.value;
+                generateExercise();
+            });
+
+            document.getElementById('clear-history').addEventListener('click', () => {
+                if (confirm('¿Limpiar historial de errores?')) {
+                    errorHistory = [];
+                    updateErrorHistory();
+                    saveData();
+                }
+            });
+
+            document.getElementById('reset-stats').addEventListener('click', () => {
+                if (confirm('¿Resetear todas las estadísticas? Esta acción no se puede deshacer.')) {
+                    score = { correct: 0, wrong: 0 };
+                    errorHistory = [];
+                    categoryStats = {};
+                    updateScore();
+                    updateErrorHistory();
+                    updateStats();
+                    saveData();
+                }
+            });
+            
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
-                    if (!btnCheck.disabled) {
-                        checkAnswer();
-                    } else if (!btnNext.disabled) {
-                        generateExercise();
-                    }
+                    if (!btnCheck.disabled) checkAnswer();
+                    else if (!btnNext.disabled) generateExercise();
                 }
             });
         });
     </script>
 </body>
-
 </html>
-
+            
